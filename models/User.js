@@ -23,10 +23,16 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    favbooks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Book",
+      },
+    ],
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 UserSchema.pre("save", async function (next) {

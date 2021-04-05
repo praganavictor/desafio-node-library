@@ -10,6 +10,7 @@ routes.get("/users", auth, userController.index);
 routes.get("/user/:id", auth, userController.show);
 routes.put("/user/:id", auth, userController.update);
 routes.delete("/user/:id", auth, userController.destroy);
+routes.put("/user/favbook/:id/:book", auth, userController.favBook);
 
 routes.get("/books", auth, bookController.index);
 routes.get("/books/:id", auth, bookController.show);

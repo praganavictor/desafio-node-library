@@ -92,4 +92,22 @@ module.exports = {
       return res.status(400).send({ msg: `Erro ao destruir a usuario`, error });
     }
   },
+
+  async favBook(req, res) {
+    try {
+      const user = await User.findById(req.params.id);
+      const book = await Book.findById(req.params.book);
+
+      user.favbooks.push(book);
+
+      await user.save();
+      await user.populate("favbooks");
+
+      return res.json(user);
+    } catch (error) {
+      return res
+        .status(400)
+        .send({ msg: `Erro ao atualizar o usuario`, error });
+    }
+  },
 };
