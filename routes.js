@@ -6,6 +6,10 @@ const userController = require("./controllers/userController");
 
 routes.post("/register", userController.register);
 routes.post("/authenticate", userController.authenticate);
+routes.get("/users", auth, userController.index);
+routes.get("/user/:id", auth, userController.show);
+routes.put("/user/:id", auth, userController.update);
+routes.delete("/user/:id", auth, userController.destroy);
 
 routes.get("/books", auth, bookController.index);
 routes.get("/books/:id", auth, bookController.show);

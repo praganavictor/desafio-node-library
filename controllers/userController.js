@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Book = require("../models/Book");
 const authConfig = require("../config");
 
 const bcrypt = require("bcryptjs");
@@ -9,7 +10,8 @@ module.exports = {
     const { email } = req.body;
 
     try {
-      if (await User.findOne({ email })) res.status(400).send({ error: "Usuario já existe" });
+      if (await User.findOne({ email }))
+        res.status(400).send({ error: "Usuario já existe" });
 
       const user = await User.create(req.body);
 
@@ -43,5 +45,51 @@ module.exports = {
     });
 
     return res.json({ user, token });
+  },
+
+  async index(req, res) {
+    try {
+      const users = await User.find({}).populate("favbooks");
+
+      return res.json(users);
+    } catch (error) {
+      return res
+        .status(400)
+        .send({ msg: `Erro ao carregar os usuarios`, error });
+    }
+  },
+
+  async show(req, res) {
+    try {
+      const user = await User.findById(req.params.id);
+
+      return res.json(user);
+    } catch (error) {
+      return res.status(400).send({ msg: `Erro ao carregar a usuario`, error });
+    }
+  },
+
+  async update(req, res) {
+    try {
+      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+      });
+
+      return res.json(user);
+    } catch (error) {
+      return res
+        .status(400)
+        .send({ msg: `Erro ao atualizar o usuario`, error });
+    }
+  },
+
+  async destroy(req, res) {
+    try {
+      await User.findByIdAndDelete(req.params.id);
+
+      return res.send({ msg: "Apagado com sucesso" });
+    } catch (error) {
+      return res.status(400).send({ msg: `Erro ao destruir a usuario`, error });
+    }
   },
 };
